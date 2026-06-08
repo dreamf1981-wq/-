@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>جدول الدوام — متوسطة محمد بن الهيثم</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #0F6E56;
+    --green-light: #E1F5EE;
+    --green-mid: #1D9E75;
+    --amber: #854F0B;
+    --amber-light: #FAEEDA;
+    --amber-mid: #EF9F27;
+    --text: #1a1a1a;
+    --text-muted: #666;
+    --border: #e0e0e0;
+    --bg: #f7f8fa;
+    --white: #fff;
+    --radius: 12px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.07);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* ===== TOOLBAR ===== */
+  .toolbar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+
+  .toolbar-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--green);
+    margin-left: auto;
+  }
+
+  .toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .toolbar-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border-radius: 50px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    font-family: 'Tajawal', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .toggle-btn.active {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+  }
+
+  .toggle-btn:hover:not(.active) {
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  .toggle-btn .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.6;
+  }
+
+  .divider {
+    width: 1px;
+    height: 28px;
+    background: var(--border);
+  }
+
+  .print-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 18px;
+    border-radius: 50px;
+    border: none;
+    background: var(--green);
+    color: #fff;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .print-btn:hover { background: #085041; }
+
+  /* ===== PAGE ===== */
+  .page {
+    max-width: 860px;
+    margin: 32px auto;
+    padding: 0 20px 40px;
+  }
+
+  /* ===== HEADER ===== */
+  .header {
+    background: var(--white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 28px 32px 24px;
+    margin-bottom: 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; left: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--green) 0%, var(--green-mid) 100%);
+  }
+
+  .ministry-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .ministry-logo {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    background: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+
+  .ministry-text {
+    text-align: right;
+  }
+
+  .ministry-text .line1 {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .ministry-text .line2 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green);
+  }
+
+  .school-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--green-light);
+    color: var(--green);
+    padding: 5px 16px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .header h1 {
+    font-size: 21px;
+    font-weight: 900;
+    color: var(--text);
+    line-height: 1.4;
+    margin-bottom: 5px;
+  }
+
+  .header h1 span {
+    color: var(--green);
+  }
+
+  .header p {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* ===== WEEK SECTION ===== */
+  .week-section {
+    background: var(--white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: opacity 0.3s;
+  }
+
+  .week-section.hidden-section { display: none; }
+
+  .week-header-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: var(--green);
+    color: #fff;
+  }
+
+  .week-num-badge {
+    background: rgba(255,255,255,0.2);
+    border-radius: 50px;
+    padding: 3px 12px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .week-title-text {
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .week-dates {
+    font-size: 12px;
+    opacity: 0.8;
+    margin-right: auto;
+  }
+
+  /* ===== TABLE ===== */
+  .schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .schedule-table thead tr {
+    background: #f0f9f5;
+  }
+
+  .schedule-table th {
+    padding: 11px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--green);
+    text-align: right;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .schedule-table td {
+    padding: 13px 16px;
+    font-size: 13px;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+  }
+
+  .schedule-table tr:last-child td { border-bottom: none; }
+
+  .schedule-table tr.hidden-row { display: none; }
+
+  .schedule-table th.hidden-col,
+  .schedule-table td.hidden-col { display: none; }
+
+  .schedule-table tr:hover td {
+    background: #fafffe;
+  }
+
+  .day-cell {
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .hijri-cell {
+    color: var(--text-muted);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .miladi-cell {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .type-cell {
+    white-space: nowrap;
+  }
+
+  .type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 14px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .type-badge.presence {
+    background: var(--green-light);
+    color: var(--green);
+  }
+
+  .type-badge.remote {
+    background: var(--amber-light);
+    color: var(--amber);
+  }
+
+  .type-icon {
+    font-size: 15px;
+  }
+
+  /* ===== LEGEND ===== */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    padding: 14px;
+    background: var(--white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .legend-icon {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+
+  .legend-icon.presence { background: var(--green-light); color: var(--green); }
+  .legend-icon.remote   { background: var(--amber-light); color: var(--amber); }
+
+  /* ===== FOOTER ===== */
+  .footer-bar {
+    background: var(--white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 13px 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .footer-bar strong {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  /* ===== PRINT ===== */
+  @media print {
+    @page {
+      size: A4 portrait;
+      margin: 15mm 12mm;
+    }
+
+    body { background: #fff; }
+
+    .toolbar { display: none !important; }
+
+    .page {
+      margin: 0;
+      padding: 0;
+      max-width: 100%;
+    }
+
+    .week-section { box-shadow: none; page-break-inside: avoid; }
+    .header { box-shadow: none; }
+    .footer-bar { box-shadow: none; }
+
+    .hidden-row, .hidden-col, .hidden-section { display: none !important; }
+
+    .week-header-bar {
+      background: #0F6E56 !important;
+      color: #fff !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .schedule-table thead tr {
+      background: #f0f9f5 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .type-badge.presence {
+      background: #E1F5EE !important;
+      color: #0F6E56 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .type-badge.remote {
+      background: #FAEEDA !important;
+      color: #854F0B !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .header::before {
+      background: #0F6E56 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== TOOLBAR ===== -->
+<div class="toolbar">
+  <div class="toolbar-title">🎛️ تحكم في العرض</div>
+
+  <div class="divider"></div>
+
+  <div class="toolbar-group">
+    <span class="toolbar-label">الأسابيع:</span>
+    <button class="toggle-btn active" onclick="toggleSection('week16', this)">
+      <span class="dot"></span> الأسبوع ١٦
+    </button>
+    <button class="toggle-btn active" onclick="toggleSection('week17', this)">
+      <span class="dot"></span> الأسبوع ١٧
+    </button>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="toolbar-group">
+    <span class="toolbar-label">الأيام:</span>
+    <button class="toggle-btn active" id="btn-day-0" onclick="toggleDay(0, this)">الأحد</button>
+    <button class="toggle-btn active" id="btn-day-1" onclick="toggleDay(1, this)">الاثنين</button>
+    <button class="toggle-btn active" id="btn-day-2" onclick="toggleDay(2, this)">الثلاثاء</button>
+    <button class="toggle-btn active" id="btn-day-3" onclick="toggleDay(3, this)">الأربعاء</button>
+    <button class="toggle-btn active" id="btn-day-4" onclick="toggleDay(4, this)">الخميس</button>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="toolbar-group">
+    <span class="toolbar-label">الأعمدة:</span>
+    <button class="toggle-btn active" onclick="toggleCol('col-hijri', this)">التاريخ الهجري</button>
+    <button class="toggle-btn active" onclick="toggleCol('col-miladi', this)">التاريخ الميلادي</button>
+    <button class="toggle-btn active" onclick="toggleCol('col-type', this)">نوع الدراسة</button>
+  </div>
+
+  <div class="divider"></div>
+
+  <button class="print-btn" onclick="window.print()">
+    🖨️ طباعة
+  </button>
+</div>
+
+<!-- ===== PAGE ===== -->
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="ministry-row">
+      <div class="ministry-logo">🏛️</div>
+      <div class="ministry-text">
+        <div class="line1">الإدارة العامة للتعليم بمنطقة المدينة المنورة</div>
+        <div class="line2">وزارة التعليم — Ministry of Education</div>
+      </div>
+    </div>
+    <div class="school-badge">🏫 متوسطة محمد بن الهيثم</div>
+    <h1>جدول الدوام في الأسبوع <span>السادس عشر والسابع عشر</span></h1>
+    <p>وفق التعليم المدمج للعام الدراسي ١٤٤٧ هـ</p>
+  </div>
+
+  <!-- WEEK 16 -->
+  <div class="week-section" id="week16">
+    <div class="week-header-bar">
+      <span class="week-num-badge">الأسبوع ١٦</span>
+      <span class="week-title-text">الأسبوع السادس عشر</span>
+      <span class="week-dates">٧ — ١١ يونيو ٢٠٢٦</span>
+    </div>
+    <table class="schedule-table">
+      <thead>
+        <tr>
+          <th>اليوم</th>
+          <th class="col-hijri">التاريخ الهجري</th>
+          <th class="col-miladi">التاريخ الميلادي</th>
+          <th class="col-type">نوع الدراسة</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-day="0">
+          <td class="day-cell">الأحد</td>
+          <td class="hijri-cell col-hijri">١٤٤٧/١٢/٢١ هـ</td>
+          <td class="miladi-cell col-miladi">7 / 6 / 2026</td>
+          <td class="type-cell col-type">
+            <span class="type-badge remote"><span class="type-icon">💻</span> دراسة عن بعد</span>
+          </td>
+        </tr>
+        <tr data-day="1">
+          <td class="day-cell">الاثنين</td>
+          <td class="hijri-cell col-hijri">١٤٤٧/١٢/٢٢ هـ</td>
+          <td class="miladi-cell col-miladi">8 / 6 / 2026</td>
+          <td class="type-cell col-type">
+            <span class="type-badge presence"><span class="type-icon">🏫</span> دراسة حضوري</span>
+          </td>
+        </tr>
+        <tr data-day="2">
+          <td class="day-cell">الثلاثاء</td>
+          <td class="hijri-cell col-hijri">١٤٤٧/١٢/٢٣ هـ</td>
+          <td class="miladi-cell col-miladi">9 / 6 / 2026</td>
+          <td class="type-cell col-type">
+            <span class="type-badge presence"><span class="type-icon">🏫</span> دراسة حضوري</span>
+          </td>
+        </tr>
+        <tr data-day="3">
+          <td class="day-cell">الأربعاء</td>
+          <td class="hijri-cell col-hijri">١٤٤٧/١٢/٢٤ هـ</td>
+          <td class="miladi-cell col-miladi">10 / 6 / 2026</td>
+          <td class="type-cell col-type">
+            <span class="type-badge presence"><span class="type-icon">🏫</span> دراسة حضوري</span>
+          </td>
+        </tr>
+        <tr data-day="4">
+          <td class="day-cell">الخميس</td>
+          <td class="hijri-cell col-hijri">١٤٤٧/١٢/٢٥ هـ</td>
+          <td class="miladi-cell col-miladi">11 / 6 / 2026</td>
+          <td class="type-cell col-type">
+            <span class="type-badge remote"><span class="type-icon">💻</span> دراسة عن بعد</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- WEEK 17 -->
+  <div class="week-section" id="week17">
+    <div class="week-header-bar">
+      <span class="week-num-badge">الأسبوع ١٧</span>
+      <span class="week-title-text">الأسبوع السابع عشر</span>
+      <span class="week-dates">١٤ — ١٨ يونيو ٢٠٢٦</span>
+    </div>
+    <table class="schedule-table">
+      <thead>
+        <tr>
+          <th>اليوم</th>
+          <th class="col-hijri">التاريخ الهجري</th>
+          <th class="col-miladi">التاريخ الميلادي</th>
+          <th class="col-type">نوع الدراسة</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-day="0">
+          <td class="day-cell">الأحد</td>
+          <td class="hijri-cell col-hijri">١٤٤٧/١٢/٢٨ هـ</td>
+          <td class="miladi-cell col-miladi">14 / 6 / 2026</td>
+          <td class="type-cell col-type">
+            <span class="type-badge presence"><span class="type-icon">🏫</span> دراسة حضوري</span>
+          </td>
+        </tr>
+        <tr data-day="1">
+          <td class="day-cell">الاثنين</td>
+          <td class="hijri-cell col-hijri">١٤٤٧/١٢/٢٩ هـ</td>
+          <td class="miladi-cell col-miladi">15 / 6 / 2026</td>
+          <td class="type-cell col-type">
+            <span class="type-badge presence"><span class="type-icon">🏫</span> دراسة حضوري</span>
+          </td>
+        </tr>
+        <tr data-day="2">
+          <td class="day-cell">الثلاثاء</td>
+          <td class="hijri-cell col-hijri">١٤٤٨/١/١ هـ</td>
+          <td class="miladi-cell col-miladi">16 / 6 / 2026</td>
+          <td class="type-cell col-type">
+            <span class="type-badge remote"><span class="type-icon">💻</span> دراسة عن بعد</span>
+          </td>
+        </tr>
+        <tr data-day="3">
+          <td class="day-cell">الأربعاء</td>
+          <td class="hijri-cell col-hijri">١٤٤٨/١/٢ هـ</td>
+          <td class="miladi-cell col-miladi">17 / 6 / 2026</td>
+          <td class="type-cell col-type">
+            <span class="type-badge remote"><span class="type-icon">💻</span> دراسة عن بعد</span>
+          </td>
+        </tr>
+        <tr data-day="4">
+          <td class="day-cell">الخميس</td>
+          <td class="hijri-cell col-hijri">١٤٤٨/١/٣ هـ</td>
+          <td class="miladi-cell col-miladi">18 / 6 / 2026</td>
+          <td class="type-cell col-type">
+            <span class="type-badge remote"><span class="type-icon">💻</span> دراسة عن بعد</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-icon presence">🏫</div>
+      دراسة حضوري — بدوام في المدرسة
+    </div>
+    <div class="legend-item">
+      <div class="legend-icon remote">💻</div>
+      دراسة عن بعد — تعليم إلكتروني
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-bar">
+    <span>إعداد وتصميم: <strong>فهد العوفي</strong></span>
+    <span>وكيل المدرسة: <strong>عبدالعزيز البيضاني</strong></span>
+    <span>مدير المدرسة: <strong>عبدالمنعم الحيسوني</strong></span>
+  </div>
+
+</div>
+
+<script>
+  function toggleSection(id, btn) {
+    const el = document.getElementById(id);
+    const hidden = el.classList.toggle('hidden-section');
+    btn.classList.toggle('active', !hidden);
+  }
+
+  function toggleDay(dayIndex, btn) {
+    const rows = document.querySelectorAll(`tr[data-day="${dayIndex}"]`);
+    const willHide = btn.classList.contains('active');
+    rows.forEach(r => r.classList.toggle('hidden-row', willHide));
+    btn.classList.toggle('active', !willHide);
+  }
+
+  function toggleCol(colClass, btn) {
+    const els = document.querySelectorAll('.' + colClass);
+    const willHide = btn.classList.contains('active');
+    els.forEach(el => el.classList.toggle('hidden-col', willHide));
+    btn.classList.toggle('active', !willHide);
+  }
+</script>
+
+</body>
+</html>
+
+
